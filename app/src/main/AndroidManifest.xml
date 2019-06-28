@@ -10,13 +10,25 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- you can also add custom permission for safe here，-->
+        <provider
+                android:process=":provider"
+                android:exported="true"
+                android:authorities="com.example.contentresloverdemo.provider"
+                android:name=".provider.MyProvider">
+
+        </provider>
+
     </application>
 
 </manifest>

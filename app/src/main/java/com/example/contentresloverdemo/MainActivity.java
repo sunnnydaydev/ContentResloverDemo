@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,11 +24,56 @@ import java.security.Permission;
 
 public class MainActivity extends AppCompatActivity {
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        checkPermision();
+        checkPermision(); // content resolver 的简单实用
+        customProvider(); //deal custom content provider
+    }
+
+    /**
+     * 自定义 内容提供者逻辑处理
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void customProvider() {
+        queryBook(); // 查询book表
+        queryUser();// 查询user 表
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void queryUser() {
+        Uri uri = Uri.parse("content://com.example.contentresloverdemo.provider/user");
+        Cursor cursor = getContentResolver().query(uri,
+                null,
+                null,
+                null);
+
+        if (null != cursor){
+            while(cursor.moveToNext()){
+                String userName =   cursor.getString(cursor.getColumnIndex("name"));
+                String userid = cursor.getString(cursor.getColumnIndex("id"));
+                Log.i("aaa", "customProvider: "+userid+userName);
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void queryBook() {
+        Uri uri = Uri.parse("content://com.example.contentresloverdemo.provider/book");
+        Cursor cursor = getContentResolver().query(uri,
+                null,
+                null,
+                null);
+
+        if (null != cursor){
+            while(cursor.moveToNext()){
+                String bookName =   cursor.getString(cursor.getColumnIndex("name"));
+                String bookid = cursor.getString(cursor.getColumnIndex("id"));
+                Log.i("aaa", "customProvider: "+bookid+bookName);
+            }
+        }
     }
 
     /**
